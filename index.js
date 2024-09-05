@@ -18,7 +18,7 @@ const client = new OpenAI({
 const getGPTResponse = async (body) => {
   try {
     const response = await client.chat.completions.create({
-      model: "gpt-3.5-turbo", // You can use other models like 'gpt-4'
+      model: "gpt-4o-mini", // You can use other models like 'gpt-4'
       messages: [
         {
           role: "system",
