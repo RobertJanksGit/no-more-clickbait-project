@@ -1,8 +1,11 @@
 const OpenAI = require("openai");
+
 const express = require("express");
 const cors = require("cors");
 const app = express();
 const PORT = 3000;
+
+app.use(cors());
 
 require("dotenv").config();
 
@@ -34,29 +37,15 @@ const getGPTResponse = async (body) => {
   }
 };
 
-// Enable CORS with specific options
-app.use(
-  cors({
-    origin: "https://www.foxnews.com", // Replace with your specific domain or use '*' for all domains
-    methods: ["GET", "POST", "OPTIONS"], // Specify allowed methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
-  })
-);
-
-// Middleware to parse JSON bodies
+// will parse JSON bodies from post request for all requests made
 app.use(express.json());
 
-// Handle preflight OPTIONS requests
-app.options("*", cors());
-
-// Define POST endpoint
 app.post("/", async (req, res) => {
   console.log(req.body);
   const response = await getGPTResponse(req.body);
   res.json(response);
 });
 
-// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
