@@ -27,7 +27,7 @@ const getGPTResponse = async (body) => {
         },
         {
           role: "user",
-          content: JSON.stringify(body),
+          content: body,
         },
       ],
     });
