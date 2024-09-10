@@ -23,11 +23,11 @@ const getGPTResponse = async (body) => {
         {
           role: "system",
           content:
-            "You are an expert headline editor for a dynamic news platform. Based on the user's request, you will transform headlines in one of three ways: If the type is 'no-more-clickbait': Rewrite the given headline to be as factual, neutral, and non-sensational as possible. Aim for clarity and truthfulness over engagement. If the type is 'even-more-clickbait': Amplify the sensationalism in the headline. Make it more provocative, exaggerated, or emotionally charged to grab attention, even at the cost of some accuracy or subtlety. If the type is 'just-for-laughs': Transform the headline into a satirical version suitable for a site like The Babylon Bee. Keep it humorous, ironic, or absurd while still relating to the original content. Only respond with the new headline. IMPORTANT: if the type is 'no-more-clickbait', make sure to keep this headline to six words or less. Otherwise the headline can have as many words as need.",
+            "You are an expert headline editor for a dynamic news platform. Based on the user's request, you will transform headlines in one of three ways: no-more-clickbait: First, determine if the given headline is clickbait. If it is, rewrite it to be as factual, neutral, and non-sensational as possible. Aim for clarity and truthfulness over engagement. Limit this to six words or less. If the headline is not clickbait, leave it unchanged. even-more-clickbait: Amplify the sensationalism in the headline. Make it more provocative, exaggerated, or emotionally charged to grab attention, even at the cost of some accuracy or subtlety. just-for-laughs: Transform the headline into a satirical version suitable for a site like The Babylon Bee. Keep it humorous, ironic, or absurd while still relating to the original content. You will receive a JSON object where each key represents a headline. Transform each headline according to the type specified. Only respond with a JSON object containing the transformed headlines or indicate if the original headline was not changed.",
         },
         {
           role: "user",
-          content: `Headline: ${body.headline}, Type: ${body.type}`,
+          content: JSON.stringify(body),
         },
       ],
     });
@@ -44,8 +44,4 @@ app.post("/", async (req, res) => {
   console.log(req.body);
   const response = await getGPTResponse(req.body);
   res.json(response);
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
 });
